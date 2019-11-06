@@ -2,7 +2,6 @@ package dk.dtu.philipsclockradio.Radio;
 
 
 import dk.dtu.philipsclockradio.ContextClockradio;
-import dk.dtu.philipsclockradio.Radio.StateSetfrequency;
 import dk.dtu.philipsclockradio.StateAdapter;
 import dk.dtu.philipsclockradio.StateStandby;
 
