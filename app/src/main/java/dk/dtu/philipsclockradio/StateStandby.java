@@ -3,8 +3,10 @@ package dk.dtu.philipsclockradio;
 import android.os.Handler;
 import java.util.Date;
 
+import dk.dtu.philipsclockradio.Alarm.StateAlarmAL1;
+import dk.dtu.philipsclockradio.Alarm.StateAlarmAL2;
 import dk.dtu.philipsclockradio.Radio.StateRadio;
-import dk.dtu.philipsclockradio.Sleep.StateSleep;
+import dk.dtu.philipsclockradio.Sleep.StateSleepOn;
 
 public class StateStandby extends StateAdapter {
 
@@ -61,7 +63,17 @@ public class StateStandby extends StateAdapter {
 
     @Override
     public void onClick_Sleep(ContextClockradio context) {
-        context.setState(new StateSleep());
+        context.setState(new StateSleepOn());
+    }
+
+    @Override
+    public void onLongClick_AL1(ContextClockradio context) {
+        context.setState(new StateAlarmAL1());
+    }
+
+    @Override
+    public void onLongClick_AL2(ContextClockradio context) {
+        context.setState(new StateAlarmAL2());
     }
 
     @Override
@@ -71,8 +83,8 @@ public class StateStandby extends StateAdapter {
         }else if (!stateRadio) {
             context.setState(new StateRadio(context.getFrequency()));
             stateRadio = true;
-
         }
+
 
 
 

@@ -27,7 +27,6 @@ public class StateSetTime extends StateAdapter {
         mTime.setTime(mTime.getTime() + 3600000);
         context.setTime(mTime);
         context.updateDisplayTime();
-        System.out.println(mTime.getHours());
     }
 
     @Override
@@ -37,7 +36,6 @@ public class StateSetTime extends StateAdapter {
         mTime.setTime(mTime.getTime() + 60000);
         context.setTime(mTime);
         context.updateDisplayTime();
-        System.out.println(mTime.getMinutes());
     }
 
     @Override

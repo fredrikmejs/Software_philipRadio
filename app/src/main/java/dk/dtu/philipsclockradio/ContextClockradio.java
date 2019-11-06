@@ -6,7 +6,7 @@ import java.util.Date;
 //
 public class ContextClockradio {
     private State currentState;
-    private Date mTime;
+    private Date mTime, alarm1, alarm2;
     private String mDisplayText;
     public boolean isClockRunning = false;
     private double frequency;
@@ -66,6 +66,16 @@ public class ContextClockradio {
 
     }
 
+    public void updateDisplayAlarm1(){
+        mDisplayText = alarm1.toString().substring(11,16);
+        ui.setDisplayText(mDisplayText);
+    }
+
+    public void updateDisplayAlarm2(){
+        mDisplayText = alarm2.toString().substring(11,16);
+        ui.setDisplayText(mDisplayText);
+    }
+
     public void updateDisplayFrequency(){
         mDisplayText = String.valueOf(frequency);
         ui.setDisplayText(mDisplayText);
@@ -84,6 +94,21 @@ public class ContextClockradio {
         ui.setDisplayText(mDisplayText);
     }
 
+    public Date getAlarm1(){
+        return alarm1;
+    }
+
+    public Date getAlarm2(){
+        return alarm2;
+    }
+
+    public void setAlarm1(Date date){
+        alarm1 = date;
+    }
+
+    public void setAlarm2(Date date){
+        alarm2 = date;
+    }
 
     public Date getTime(){
         return mTime;

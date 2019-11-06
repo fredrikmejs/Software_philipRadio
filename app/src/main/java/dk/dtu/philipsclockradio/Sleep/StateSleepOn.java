@@ -11,7 +11,7 @@ public class StateSleepOn extends StateAdapter {
     long exitTime, delay, current;
     private ContextClockradio mcontext;
 
-    StateSleepOn(){}
+    public StateSleepOn(){}
 
     private Handler mhandler = new Handler();
 
@@ -21,10 +21,16 @@ public class StateSleepOn extends StateAdapter {
 
     @Override
     public void onEnterState(ContextClockradio context) {
-    exitSleep();
-    this.mcontext = context;
-    mExitSleep.run();
-    mSleep = context.getSleepValue();
+        context.updateDisplaySleep();
+
+
+        if (context.getSleepValue() == 0){
+            context.ui.turnOffLED(3);
+        } else context.ui.turnOnLED(3);
+        exitSleep();
+        this.mcontext = context;
+        mExitSleep.run();
+        mSleep = context.getSleepValue();
 
 
     }
