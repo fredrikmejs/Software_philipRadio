@@ -1,5 +1,6 @@
 package dk.dtu.philipsclockradio;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,6 +13,7 @@ public class ContextClockradio {
     private double frequency;
     public boolean stateRadio = false;
     private int sleepValue;
+    private ArrayList<Double> radioChannelsFM = new ArrayList<>(), radioChannelsAM = new ArrayList<>();
 
 
 
@@ -57,6 +59,25 @@ public class ContextClockradio {
 
     }
 
+    public ArrayList<Double> getSaveFrequencyFM(){
+
+        return radioChannelsFM;
+    }
+
+    public void SetSaveFrequencyFM(double frequency){
+
+        radioChannelsFM.add(frequency);
+    }
+
+    public ArrayList<Double> getSaveFrequencyAM(){
+
+        return radioChannelsFM;
+    }
+
+    public void SetSaveFrequencyAM(double frequency){
+
+        radioChannelsFM.add(frequency);
+    }
 
     public void setFrequency(double RadioFrequency){
         frequency = RadioFrequency;
@@ -77,6 +98,11 @@ public class ContextClockradio {
     }
 
     public void updateDisplayFrequency(){
+        mDisplayText = String.valueOf(frequency);
+        ui.setDisplayText(mDisplayText);
+    }
+
+    public void updateDisplaySavedFrequency(double frequency){
         mDisplayText = String.valueOf(frequency);
         ui.setDisplayText(mDisplayText);
     }
