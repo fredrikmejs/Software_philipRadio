@@ -16,15 +16,15 @@ public class StateSetfrequency extends StateAdapter {
         context.ui.toggleRadioPlaying();
         mfrequency = context.getFrequency();
 
-
-
     }
+
+    //TODO OPGAVE 2
 
     @Override
     public void onExitState(ContextClockradio context){
         //Der er en fejl med LED'en eneste måde at kontrollere nr 1 på.
         context.ui.turnOffLED(1);
-        context.ui.turnOffLED(0);
+        context.ui.toggleRadioPlaying();
 
     }
 
