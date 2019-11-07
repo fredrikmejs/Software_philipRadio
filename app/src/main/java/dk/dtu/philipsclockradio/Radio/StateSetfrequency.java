@@ -2,16 +2,19 @@ package dk.dtu.philipsclockradio.Radio;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import dk.dtu.philipsclockradio.ContextClockradio;
 import dk.dtu.philipsclockradio.StateAdapter;
 import dk.dtu.philipsclockradio.StateStandby;
+import dk.dtu.philipsclockradio.Unmuted.StateAlarmPlaying;
 
 public class StateSetfrequency extends StateAdapter {
 
     private double mfrequency, mode = 1, AMRadio = 0, FMRadio = 0;
     private int index = 0;
     private boolean changeNumber = false;
+    private Date alarmTime1,alarmTime2,snoozeTime1,snoozeTime2;
 
     ArrayList<Double> radioChannelsFM = new ArrayList<>();
     ArrayList<Double> radioChannelsAM = new ArrayList<>();
@@ -23,9 +26,21 @@ public class StateSetfrequency extends StateAdapter {
         context.ui.toggleRadioPlaying();
         mfrequency = context.getFrequency();
         FMRadio = mfrequency;
+        if (context.getAlarm1() != null)
+            alarmTime1 = context.getAlarm1();
+
+        if (context.getAlarm2() != null)
+            alarmTime2 = context.getAlarm2();
+
+        if (context.getSnoozeTime1() != null)
+            snoozeTime1 = context.getSnoozeTime1();
+
+        if (context.getSnoozeTime2() != null)
+            snoozeTime2 = context.getSnoozeTime2();
+
+
     }
 
-    //TODO OPGAVE 2
 
     @Override
     public void onExitState(ContextClockradio context){
@@ -204,14 +219,32 @@ public class StateSetfrequency extends StateAdapter {
         context.ui.turnOffTextBlink();
         context.updateDisplaySavedFrequency(mfrequency);
         index = 0;
-
-
-
     }
 
+    @Override
+    public void onClick_Snooze(ContextClockradio context) {
+        alarmTime1 = context.getAlarm1();
+        alarmTime2 = context.getAlarm2();
+        context.ui.turnOffTextBlink();
+        if (alarmTime1 != null) {
+            snoozeTime1.setTime(alarmTime1.getTime() + (60000 * 9));
+            context.setSnoozeTime1(snoozeTime1);
+        }
+        if (alarmTime2 != null){
+            snoozeTime2.setTime(alarmTime2.getTime() + (60000 * 9));
+            context.setSnoozeTime2(snoozeTime2);
+        }
+        context.setState(new StateStandby(context.getTime()));
+    }
+    @Override
+    public void onClick_AL1(ContextClockradio context) {
+        if (context.alarmPlaying)
+            context.setState(new StateAlarmPlaying());
+    }
 
-
-
-
-
+    @Override
+    public void onClick_AL2(ContextClockradio context) {
+        if (context.alarmPlaying)
+            context.setState(new StateAlarmPlaying());
+    }
 }

@@ -7,16 +7,16 @@ import dk.dtu.philipsclockradio.Alarm.StateAlarmAL1;
 import dk.dtu.philipsclockradio.Alarm.StateAlarmAL2;
 import dk.dtu.philipsclockradio.Radio.StateRadio;
 import dk.dtu.philipsclockradio.Sleep.StateSleepOn;
+import dk.dtu.philipsclockradio.Unmuted.StateAlarmPlaying;
 
 public class StateStandby extends StateAdapter {
 
     private Date mTime, alarmTime1, alarmTime2, snoozeTime1, snoozeTime2;
     private static Handler mHandler = new Handler();
     private static Handler aHandler = new Handler();
-    private Date defaultDate = new Date(2019,1,1,0,0);
     private ContextClockradio mContext;
-    private long delay = 10000;
-    private boolean stateRadio = false, alarmRunning =  false;
+    private long delay = 5000;
+    private boolean stateRadio = false, alarmRunning =  false, alarm1Running = false,alarm2Running = false;
 
     public StateStandby(Date time){
         mTime = time;
@@ -32,7 +32,7 @@ public class StateStandby extends StateAdapter {
                 mTime.setTime(currentTime + 60000);
                 mContext.setTime(mTime);
             } finally {
-                mHandler.postDelayed(mSetTime, 60000);
+                mHandler.postDelayed(mSetTime,20000); //60000);
             }
         }
     };
@@ -62,6 +62,18 @@ public class StateStandby extends StateAdapter {
         //Sikre mig den ikke pointer til null. -> nullpointer exceptions
         snoozeTime1 = alarmTime1;
         snoozeTime2 = alarmTime2;
+        context.setSnoozeTime1(snoozeTime1);
+        context.setSnoozeTime2(snoozeTime2);
+
+        if (context.alarmPlaying){
+            stopAlarm();
+            context.ui.turnOffTextBlink();
+            context.alarmPlaying = false;
+        }
+        if (!alarm1Running)
+            context.ui.turnOffLED(2);
+        if (!alarm2Running)
+            context.ui.turnOffLED(5);
 
     }
 
@@ -96,24 +108,56 @@ public class StateStandby extends StateAdapter {
         }
     }
 
-    Runnable startAlarm = new Runnable() {
+    private Runnable startAlarm = new Runnable() {
 
         @Override
         public void run() {
             mTime = mContext.getTime();
-            if (alarmTime1 != null){
-                if (mTime.getHours() == alarmTime1.getHours() && mTime.getMinutes()== alarmTime1.getMinutes()) {
+            snoozeTime1 = mContext.getSnoozeTime1();
+            snoozeTime2 = mContext.getSnoozeTime2();
+            boolean a = mTime.getHours() == snoozeTime1.getHours();
+            boolean b = mTime.getMinutes() == snoozeTime1.getMinutes();
+
+            if (alarmTime1 != null && alarm1Running) {
+                if (mTime.getHours() == alarmTime1.getHours() && mTime.getMinutes() == alarmTime1.getMinutes()) {
                     aHandler.removeCallbacks(startAlarm);
-                    mContext.setState(new StateSleepOn());
+                    System.out.println("nice1");
+                    alarm1Running = false;
+                    mContext.alarmPlaying = true;
+                    mContext.setState(new StateAlarmPlaying());
+                    return;
                 }
-            } else if (alarmTime2 != null) {
+            }
+            if (alarmTime2 != null && alarm2Running) {
                 if (mTime.getHours() == alarmTime2.getHours() && mTime.getMinutes() == alarmTime2.getMinutes()) {
                     aHandler.removeCallbacks(startAlarm);
-                    mContext.setState(new StateSleepOn());
-                   }
-                }else aHandler.postDelayed(startAlarm,delay);
+                    System.out.println("nice2");
+                    alarm2Running = false;
+                    mContext.alarmPlaying = true;
+                    mContext.setState(new StateAlarmPlaying());
+                    return;
+                }
             }
-        };
+            if (snoozeTime1 != null) {
+                if (a && b) {   //(mTime.getHours() == snoozeTime1.getHours() && snoozeTime1.getMinutes() == snoozeTime1.getMinutes()) {
+                    aHandler.removeCallbacks(startAlarm);
+                    System.out.println("nice3");
+                    mContext.alarmPlaying = true;
+                    mContext.setState(new StateAlarmPlaying());
+                    return;
+                }
+            }
+            if (snoozeTime2 != null) {
+                if (mTime.getHours() == snoozeTime2.getHours() && mTime.getMinutes() == snoozeTime2.getMinutes()) {
+                    aHandler.removeCallbacks(startAlarm);
+                    System.out.println("nice4");
+                    mContext.alarmPlaying = true;
+                    mContext.setState(new StateAlarmPlaying());
+                    return;
+                }else aHandler.postDelayed(startAlarm, delay);
+            } else aHandler.postDelayed(startAlarm, delay);
+        }
+    };
 
     void stopAlarm() {
         aHandler.removeCallbacks(mSetTime);
@@ -125,53 +169,36 @@ public class StateStandby extends StateAdapter {
         alarmTime1 = context.getAlarm1();
         alarmTime2 = context.getAlarm2();
 
-        if (alarmTime1 != null || alarmTime2 != null) {
+
+        if (alarmTime1 != null) {
             context.ui.turnOnLED(2);
             if (!alarmRunning) {
-                startAlarm.run();
                 alarmRunning = true;
-            } else {
+                alarm1Running = true;
+                startAlarm.run();
+            } else if (!alarm2Running){
                 alarmRunning = false;
                 stopAlarm();
             }
-
         }
     }
 
     @Override
     public void  onClick_AL2(ContextClockradio context){
 
-
         alarmTime1 = context.getAlarm1();
         alarmTime2 = context.getAlarm2();
 
-        if (alarmTime1 != null || alarmTime2 != null) {
+        if (alarmTime2 != null) {
             context.ui.turnOnLED(5);
-            //Date aa = new Date(2019,1,1,14,3);
-            //alarmTime2.setTime(aa.getTime());
-
             if (!alarmRunning) {
-                startAlarm.run();
                 alarmRunning = true;
-            } else {
+                alarm2Running = true;
+                startAlarm.run();
+            } else if (!alarm1Running){
                 alarmRunning = false;
                 stopAlarm();
             }
-        }
-    }
-
-    @Override
-    public void onClick_Snooze(ContextClockradio context){
-        alarmTime1 = context.getAlarm1();
-        alarmTime2 = context.getAlarm2();
-
-        if (alarmTime1 != null)
-            snoozeTime1.setTime(alarmTime1.getTime() + (60000*9));
-
-        if (alarmTime2 != null)
-            snoozeTime2.setTime(alarmTime2.getTime() + (60000*9));
-        if (!alarmRunning){
-            startAlarm.run();
         }
     }
 }

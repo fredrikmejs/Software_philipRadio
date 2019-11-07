@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import dk.dtu.philipsclockradio.Radio.StateRadio;
+import dk.dtu.philipsclockradio.Unmuted.StateAlarmPlaying;
+
 //
 public class ContextClockradio {
     private State currentState;
@@ -11,9 +14,11 @@ public class ContextClockradio {
     private String mDisplayText;
     public boolean isClockRunning = false;
     private double frequency;
-    public boolean stateRadio = false;
+    Date snoozeTime1, snoozeTime2;
+    public boolean stateRadio = false, alarmPlaying = false;
     private int sleepValue;
     private ArrayList<Double> radioChannelsFM = new ArrayList<>(), radioChannelsAM = new ArrayList<>();
+
 
 
 
@@ -25,7 +30,7 @@ public class ContextClockradio {
         //Sætter tiden til 12.00, hvis tiden ikke er sat endnu
         if(mTime == null){
             Calendar date = Calendar.getInstance();
-            date.set(2019, 1, 1, 14, 1);
+            date.set(2019, 1, 1, 2, 1);
             mTime = date.getTime();
         }
 
@@ -54,38 +59,29 @@ public class ContextClockradio {
         return sleepValue;
         }
 
-    public void setSleepValue(int sleep){
-        sleepValue = sleep;
+    public void setSleepValue(int sleep){ sleepValue = sleep;}
 
-    }
 
-    public ArrayList<Double> getSaveFrequencyFM(){
+    public ArrayList<Double> getSaveFrequencyFM(){ return radioChannelsFM;}
 
-        return radioChannelsFM;
-    }
+    public void SetSaveFrequencyFM(double frequency){ radioChannelsFM.add(frequency);}
 
-    public void SetSaveFrequencyFM(double frequency){
+    public ArrayList<Double> getSaveFrequencyAM(){ return radioChannelsAM;}
 
-        radioChannelsFM.add(frequency);
-    }
-
-    public ArrayList<Double> getSaveFrequencyAM(){
-
-        return radioChannelsAM;
-    }
-
-    public void SetSaveFrequencyAM(double frequency){
-
-        radioChannelsAM.add(frequency);
-    }
+    public void SetSaveFrequencyAM(double frequency){ radioChannelsAM.add(frequency);}
 
     public void setFrequency(double RadioFrequency){
         frequency = RadioFrequency;
         if (currentState.getClass().getSimpleName().equals("StateRadio")){
             updateDisplayFrequency();
         }
-
     }
+
+    public void setSnoozeTime1(Date date){snoozeTime1 = date;}
+    public Date getSnoozeTime1(){return snoozeTime1;}
+
+    public void setSnoozeTime2(Date date){snoozeTime2 = date;}
+    public Date getSnoozeTime2(){return snoozeTime2;}
 
     public void updateDisplayAlarm1(){
         mDisplayText = alarm1.toString().substring(11,16);
