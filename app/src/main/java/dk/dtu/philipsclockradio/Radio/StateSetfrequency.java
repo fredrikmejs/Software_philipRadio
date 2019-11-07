@@ -1,7 +1,6 @@
 package dk.dtu.philipsclockradio.Radio;
 
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import dk.dtu.philipsclockradio.ContextClockradio;
@@ -11,13 +10,10 @@ import dk.dtu.philipsclockradio.Unmuted.StateAlarmPlaying;
 
 public class StateSetfrequency extends StateAdapter {
 
-    private double mfrequency, mode = 1, AMRadio = 0, FMRadio = 0;
-    private int index = 0;
-    private boolean changeNumber = false;
-    private Date alarmTime1,alarmTime2,snoozeTime1,snoozeTime2;
+    private double mfrequency, AMRadio = 0, FMRadio = 0;
+    int mode = 1;
+    Date alarmTime1,alarmTime2,snoozeTime1,snoozeTime2;
 
-    ArrayList<Double> radioChannelsFM = new ArrayList<>();
-    ArrayList<Double> radioChannelsAM = new ArrayList<>();
 
     StateSetfrequency() { }
 
@@ -155,71 +151,19 @@ public class StateSetfrequency extends StateAdapter {
     @Override
     public void onLongClick_Power(ContextClockradio context) {
         context.stateRadio = false;
+        context.setMode(mode);
         context.setState(new StateStandby(context.getTime()));
 
     }
-//95.3  92.7 12.8
+
     @Override
     public void onLongClick_Preset(ContextClockradio context) {
         context.ui.turnOnTextBlink();
 
-        if (mode == 1) {
-            if (!changeNumber) {
-                //Sikre mig mod gentagelser
-                if (!radioChannelsFM.contains(mfrequency) && mfrequency != 0) {
-                    radioChannelsFM.add(mfrequency);
-                    context.SetSaveFrequencyFM(mfrequency);
-                }
-                changeNumber = true;
-
-            } else if (changeNumber) {
-
-                //Henter alle de gemte frekvenser
-                radioChannelsFM.removeAll(radioChannelsFM);
-                radioChannelsFM.addAll(context.getSaveFrequencyFM());
-
-                mfrequency = radioChannelsFM.get(index);
-                context.updateDisplaySavedFrequency(radioChannelsFM.get(index));
-
-
-                if (index == radioChannelsFM.size() - 1) {
-                    index = 0;
-                } else index++;
-            }
-
-        } else if (mode == 2) {
-            if (!changeNumber) {
-                //Sikre mig mod gentagelser
-                if (!radioChannelsAM.contains(mfrequency) && mfrequency != 0) {
-                    radioChannelsAM.add(mfrequency);
-                    context.SetSaveFrequencyAM(mfrequency);
-                }
-                changeNumber = true;
-
-            } else if (changeNumber) {
-
-                //Henter alle de gemte frekvenser og sikre mig mod gentagelser
-                radioChannelsAM.removeAll(radioChannelsAM);
-                radioChannelsAM.addAll(context.getSaveFrequencyAM());
-
-                mfrequency = radioChannelsAM.get(index);
-                context.updateDisplaySavedFrequency(radioChannelsAM.get(index));
-
-
-                if (index == radioChannelsAM.size() - 1) {
-                    index = 0;
-                } else index++;
-            }
-        }
+        context.setFrequency(mfrequency);
+        context.setState(new StateFrequencySaving());
     }
 
-    @Override
-    public void onClick_Preset(ContextClockradio context){
-        changeNumber = false;
-        context.ui.turnOffTextBlink();
-        context.updateDisplaySavedFrequency(mfrequency);
-        index = 0;
-    }
 
     @Override
     public void onClick_Snooze(ContextClockradio context) {

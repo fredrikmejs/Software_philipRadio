@@ -31,8 +31,6 @@ public class StateSleepOn extends StateAdapter {
         this.mcontext = context;
         mExitSleep.run();
         mSleep = context.getSleepValue();
-
-
     }
 
     @Override

@@ -16,7 +16,7 @@ public class ContextClockradio {
     private double frequency;
     Date snoozeTime1, snoozeTime2;
     public boolean stateRadio = false, alarmPlaying = false;
-    private int sleepValue;
+    private int sleepValue, mode;
     private ArrayList<Double> radioChannelsFM = new ArrayList<>(), radioChannelsAM = new ArrayList<>();
 
 
@@ -55,6 +55,8 @@ public class ContextClockradio {
         }
     }
 
+    public int getMode(){return mode;}
+    public void setMode(int mode){this.mode = mode;}
     public int getSleepValue(){
         return sleepValue;
         }

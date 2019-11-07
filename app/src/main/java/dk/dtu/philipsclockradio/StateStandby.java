@@ -115,13 +115,10 @@ public class StateStandby extends StateAdapter {
             mTime = mContext.getTime();
             snoozeTime1 = mContext.getSnoozeTime1();
             snoozeTime2 = mContext.getSnoozeTime2();
-            boolean a = mTime.getHours() == snoozeTime1.getHours();
-            boolean b = mTime.getMinutes() == snoozeTime1.getMinutes();
 
             if (alarmTime1 != null && alarm1Running) {
                 if (mTime.getHours() == alarmTime1.getHours() && mTime.getMinutes() == alarmTime1.getMinutes()) {
                     aHandler.removeCallbacks(startAlarm);
-                    System.out.println("nice1");
                     alarm1Running = false;
                     mContext.alarmPlaying = true;
                     mContext.setState(new StateAlarmPlaying());
@@ -131,7 +128,6 @@ public class StateStandby extends StateAdapter {
             if (alarmTime2 != null && alarm2Running) {
                 if (mTime.getHours() == alarmTime2.getHours() && mTime.getMinutes() == alarmTime2.getMinutes()) {
                     aHandler.removeCallbacks(startAlarm);
-                    System.out.println("nice2");
                     alarm2Running = false;
                     mContext.alarmPlaying = true;
                     mContext.setState(new StateAlarmPlaying());
@@ -139,9 +135,8 @@ public class StateStandby extends StateAdapter {
                 }
             }
             if (snoozeTime1 != null) {
-                if (a && b) {   //(mTime.getHours() == snoozeTime1.getHours() && snoozeTime1.getMinutes() == snoozeTime1.getMinutes()) {
+                if (mTime.getHours() == snoozeTime1.getHours() && mTime.getMinutes() == snoozeTime1.getMinutes()) {   //(mTime.getHours() == snoozeTime1.getHours() && snoozeTime1.getMinutes() == snoozeTime1.getMinutes()) {
                     aHandler.removeCallbacks(startAlarm);
-                    System.out.println("nice3");
                     mContext.alarmPlaying = true;
                     mContext.setState(new StateAlarmPlaying());
                     return;
@@ -150,7 +145,6 @@ public class StateStandby extends StateAdapter {
             if (snoozeTime2 != null) {
                 if (mTime.getHours() == snoozeTime2.getHours() && mTime.getMinutes() == snoozeTime2.getMinutes()) {
                     aHandler.removeCallbacks(startAlarm);
-                    System.out.println("nice4");
                     mContext.alarmPlaying = true;
                     mContext.setState(new StateAlarmPlaying());
                     return;
