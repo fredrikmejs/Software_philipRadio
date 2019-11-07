@@ -17,13 +17,10 @@ public class StateAlarmAL2 extends StateAdapter {
     public void onEnterState(ContextClockradio context) {
         context.ui.turnOnTextBlink();
         mAlarmTime = context.getAlarm2();
-        System.out.println(context.getTime().getHours());
         if (null == mAlarmTime){
             //Sætter tidspunktet til at være 00:00, når man skal indstille en alarm.
-            mAlarmTime = new Date(1970,1,1,0,0,0);
-            System.out.println(context.getTime().getHours());
+            mAlarmTime = new Date(2019,1,1,0,0);
             context.setAlarm2(mAlarmTime);
-            System.out.println(context.getTime().getHours());
             context.updateDisplayAlarm2();
         }else context.updateDisplayAlarm2();
     }
@@ -37,8 +34,7 @@ public class StateAlarmAL2 extends StateAdapter {
     public void onClick_Hour(ContextClockradio context) {
         mAlarmTime.setTime(mAlarmTime.getTime() + 3600000);
         context.setAlarm2(mAlarmTime);
-        context.updateDisplayAlarm2();
-        System.out.println(context.getTime().getHours());
+        context.updateDisplayAlarm2();;
     }
 
     @Override
@@ -50,7 +46,6 @@ public class StateAlarmAL2 extends StateAdapter {
 
     @Override
     public void onClick_AL2(ContextClockradio context) {
-        context.ui.turnOnLED(2);
         context.setAlarm2(mAlarmTime);
         context.setState(new StateStandby(context.getTime()));
     }

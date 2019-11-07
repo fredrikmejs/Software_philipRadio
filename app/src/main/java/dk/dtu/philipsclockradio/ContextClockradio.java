@@ -25,7 +25,7 @@ public class ContextClockradio {
         //Sætter tiden til 12.00, hvis tiden ikke er sat endnu
         if(mTime == null){
             Calendar date = Calendar.getInstance();
-            date.set(2019, 1, 1, 14, 00);
+            date.set(2019, 1, 1, 14, 1);
             mTime = date.getTime();
         }
 
@@ -71,12 +71,12 @@ public class ContextClockradio {
 
     public ArrayList<Double> getSaveFrequencyAM(){
 
-        return radioChannelsFM;
+        return radioChannelsAM;
     }
 
     public void SetSaveFrequencyAM(double frequency){
 
-        radioChannelsFM.add(frequency);
+        radioChannelsAM.add(frequency);
     }
 
     public void setFrequency(double RadioFrequency){

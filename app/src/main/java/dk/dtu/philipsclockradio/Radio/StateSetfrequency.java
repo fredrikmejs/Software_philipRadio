@@ -22,7 +22,7 @@ public class StateSetfrequency extends StateAdapter {
     public void onEnterState(ContextClockradio context){
         context.ui.toggleRadioPlaying();
         mfrequency = context.getFrequency();
-
+        FMRadio = mfrequency;
     }
 
     //TODO OPGAVE 2
@@ -123,7 +123,6 @@ public class StateSetfrequency extends StateAdapter {
             context.setFrequency(mfrequency);
 
         }
-//91.4
 
     } else if(mode == 2){
         if (AMRadio != 0){
@@ -184,7 +183,7 @@ public class StateSetfrequency extends StateAdapter {
 
             } else if (changeNumber) {
 
-                //Henter alle de gemte frekvenser
+                //Henter alle de gemte frekvenser og sikre mig mod gentagelser
                 radioChannelsAM.removeAll(radioChannelsAM);
                 radioChannelsAM.addAll(context.getSaveFrequencyAM());
 

@@ -17,13 +17,10 @@ public class StateAlarmAL1 extends StateAdapter {
     public void onEnterState(ContextClockradio context) {
         context.ui.turnOnTextBlink();
         mAlarmTime = context.getAlarm1();
-        System.out.println(context.getTime().getHours());
         if (null == mAlarmTime){
             //To go around a nullpointer, had to give mAlarm a value
-            mAlarmTime = new Date(1970,1,1,0,0,0);
-            System.out.println(context.getTime().getHours());
+            mAlarmTime = new Date(2019,1,1,0,0);
             context.setAlarm1(mAlarmTime);
-            System.out.println(context.getTime().getHours());
             context.updateDisplayAlarm1();
         }else context.updateDisplayAlarm1();
     }
@@ -38,8 +35,7 @@ public class StateAlarmAL1 extends StateAdapter {
         mAlarmTime.setTime(mAlarmTime.getTime() + 3600000);
         context.setAlarm1(mAlarmTime);
         context.updateDisplayAlarm1();
-        System.out.println(context.getTime().getHours());
-    }
+        }
 
     @Override
     public void onClick_Min(ContextClockradio context) {
@@ -50,7 +46,6 @@ public class StateAlarmAL1 extends StateAdapter {
 
     @Override
     public void onClick_AL1(ContextClockradio context) {
-        context.ui.turnOnLED(2);
         context.setAlarm1(mAlarmTime);
         context.setState(new StateStandby(context.getTime()));
     }
