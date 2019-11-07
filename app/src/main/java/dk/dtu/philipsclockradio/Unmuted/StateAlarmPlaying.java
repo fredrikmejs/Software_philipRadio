@@ -41,6 +41,8 @@ private ContextClockradio mContext;
         context.setState(new StateStandby(context.getTime()));
     }
 
+
+    //Tilføjer de 9 minutter, når der bliver trykket på snooze
     @Override
     public void onClick_Snooze(ContextClockradio context) {
         alarmTime1 = context.getAlarm1();

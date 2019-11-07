@@ -54,6 +54,7 @@ public class StateSleepOn extends StateAdapter {
         } else index++;
     }
 
+    //Handler som køre i baggrunden, så når, der er gået 5 sekunder  går den tilbage til standby
     Runnable mExitSleep = new Runnable() {
 
         @Override

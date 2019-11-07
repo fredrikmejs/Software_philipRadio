@@ -164,22 +164,6 @@ public class StateSetfrequency extends StateAdapter {
         context.setState(new StateFrequencySaving());
     }
 
-
-    @Override
-    public void onClick_Snooze(ContextClockradio context) {
-        alarmTime1 = context.getAlarm1();
-        alarmTime2 = context.getAlarm2();
-        context.ui.turnOffTextBlink();
-        if (alarmTime1 != null) {
-            snoozeTime1.setTime(alarmTime1.getTime() + (60000 * 9));
-            context.setSnoozeTime1(snoozeTime1);
-        }
-        if (alarmTime2 != null){
-            snoozeTime2.setTime(alarmTime2.getTime() + (60000 * 9));
-            context.setSnoozeTime2(snoozeTime2);
-        }
-        context.setState(new StateStandby(context.getTime()));
-    }
     @Override
     public void onClick_AL1(ContextClockradio context) {
         if (context.alarmPlaying)

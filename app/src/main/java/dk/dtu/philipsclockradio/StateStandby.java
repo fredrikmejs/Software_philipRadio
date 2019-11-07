@@ -65,6 +65,7 @@ public class StateStandby extends StateAdapter {
         context.setSnoozeTime1(snoozeTime1);
         context.setSnoozeTime2(snoozeTime2);
 
+        //Stopper alarmen
         if (context.alarmPlaying){
             stopAlarm();
             context.ui.turnOffTextBlink();
@@ -108,6 +109,8 @@ public class StateStandby extends StateAdapter {
         }
     }
 
+
+    //Tråd som hele tiden tjekker, om der alarmen skal starte
     private Runnable startAlarm = new Runnable() {
 
         @Override
@@ -153,10 +156,13 @@ public class StateStandby extends StateAdapter {
         }
     };
 
-    void stopAlarm() {
+    //Stopper alarmen
+    private void stopAlarm() {
         aHandler.removeCallbacks(mSetTime);
     }
 
+
+    //Start alarmen
     @Override
     public void  onClick_AL1(ContextClockradio context){
 
@@ -176,7 +182,7 @@ public class StateStandby extends StateAdapter {
             }
         }
     }
-
+    //Start alarmen
     @Override
     public void  onClick_AL2(ContextClockradio context){
 

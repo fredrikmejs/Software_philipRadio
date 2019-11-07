@@ -19,9 +19,6 @@ public class ContextClockradio {
     private int sleepValue, mode;
     private ArrayList<Double> radioChannelsFM = new ArrayList<>(), radioChannelsAM = new ArrayList<>();
 
-
-
-
     public static MainUI ui;
 
     public ContextClockradio(MainUI context){
@@ -55,6 +52,8 @@ public class ContextClockradio {
         }
     }
 
+    //Gettere og settere
+
     public int getMode(){return mode;}
     public void setMode(int mode){this.mode = mode;}
     public int getSleepValue(){
@@ -85,6 +84,8 @@ public class ContextClockradio {
     public void setSnoozeTime2(Date date){snoozeTime2 = date;}
     public Date getSnoozeTime2(){return snoozeTime2;}
 
+
+    //Update UI
     public void updateDisplayAlarm1(){
         mDisplayText = alarm1.toString().substring(11,16);
         ui.setDisplayText(mDisplayText);
