@@ -8,14 +8,14 @@ import dk.dtu.philipsclockradio.StateStandby;
 
 public class StateSleepOn extends StateAdapter {
     private int mSleep, index;
-    long exitTime, delay, current;
+    private long exitTime;
     private ContextClockradio mcontext;
 
     public StateSleepOn(){}
 
     private Handler mhandler = new Handler();
 
-    private int sleepArr[] = {120,90,60,30,15,0};
+    private int[] sleepArr = {120, 90, 60, 30, 15, 0};
 
 
 
@@ -59,12 +59,12 @@ public class StateSleepOn extends StateAdapter {
 
         @Override
         public void run() {
-            current = System.currentTimeMillis();
-            delay = exitTime - current;
+            long current = System.currentTimeMillis();
+            long delay = exitTime - current;
             if (current >= exitTime){
                 mhandler.removeCallbacks(mExitSleep);
                 mcontext.setState(new StateStandby(mcontext.getTime()));
-            } else mhandler.postDelayed(mExitSleep,delay);
+            } else mhandler.postDelayed(mExitSleep, delay);
         }
     };
 

@@ -13,8 +13,8 @@ public class ContextClockradio {
     private Date mTime, alarm1, alarm2;
     private String mDisplayText;
     public boolean isClockRunning = false;
-    private double frequency;
-    Date snoozeTime1, snoozeTime2;
+    private double frequency, AMRadio, FMRadio;
+    private Date snoozeTime1, snoozeTime2;
     public boolean stateRadio = false, alarmPlaying = false;
     private int sleepValue, mode;
     private ArrayList<Double> radioChannelsFM = new ArrayList<>(), radioChannelsAM = new ArrayList<>();
@@ -54,6 +54,10 @@ public class ContextClockradio {
 
     //Gettere og settere
 
+    public double getAMRadio(){return AMRadio;}
+    public void setAMRadio(double AMRadio){this.AMRadio = AMRadio;}
+    public double getFMRadio(){return FMRadio;}
+    public void setFMRadio(double FMRadio){this.FMRadio = FMRadio;}
     public int getMode(){return mode;}
     public void setMode(int mode){this.mode = mode;}
     public int getSleepValue(){

@@ -9,8 +9,8 @@ public class StateFrequencySaving extends StateAdapter {
 
 
     private int mode, index = 0;
-    ArrayList<Double> radioChannelsFM = new ArrayList<>();
-    ArrayList<Double> radioChannelsAM = new ArrayList<>();
+    private ArrayList<Double> radioChannelsFM = new ArrayList<>();
+    private ArrayList<Double> radioChannelsAM = new ArrayList<>();
     private double mfrequency;
 
     @Override
@@ -61,8 +61,6 @@ public class StateFrequencySaving extends StateAdapter {
         if (mode == 0){
             mode = 1;
         }
-
-
 
         if (mode == 1) {
             //Sikre mig mod gentagelser

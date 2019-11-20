@@ -110,7 +110,7 @@ public class StateStandby extends StateAdapter {
     }
 
 
-    //Tråd som hele tiden tjekker, om der alarmen skal starte
+    //Tråd som hele tiden tjekker, om alarmen skal starte
     private Runnable startAlarm = new Runnable() {
 
         @Override
@@ -167,7 +167,7 @@ public class StateStandby extends StateAdapter {
     public void  onClick_AL1(ContextClockradio context){
 
         alarmTime1 = context.getAlarm1();
-        alarmTime2 = context.getAlarm2();
+
 
 
         if (alarmTime1 != null) {
@@ -186,7 +186,7 @@ public class StateStandby extends StateAdapter {
     @Override
     public void  onClick_AL2(ContextClockradio context){
 
-        alarmTime1 = context.getAlarm1();
+
         alarmTime2 = context.getAlarm2();
 
         if (alarmTime2 != null) {

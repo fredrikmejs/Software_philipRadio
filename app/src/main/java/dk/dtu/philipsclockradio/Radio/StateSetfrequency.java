@@ -1,18 +1,14 @@
 package dk.dtu.philipsclockradio.Radio;
 
-
-import java.util.Date;
-
 import dk.dtu.philipsclockradio.ContextClockradio;
 import dk.dtu.philipsclockradio.StateAdapter;
 import dk.dtu.philipsclockradio.StateStandby;
-import dk.dtu.philipsclockradio.Unmuted.StateAlarmPlaying;
+
 
 public class StateSetfrequency extends StateAdapter {
 
     private double mfrequency, AMRadio = 0, FMRadio = 0;
-    int mode = 1;
-    Date alarmTime1,alarmTime2,snoozeTime1,snoozeTime2;
+    private int mode;
 
 
     StateSetfrequency() { }
@@ -21,28 +17,27 @@ public class StateSetfrequency extends StateAdapter {
     public void onEnterState(ContextClockradio context){
         context.ui.toggleRadioPlaying();
         mfrequency = context.getFrequency();
-        FMRadio = mfrequency;
-        if (context.getAlarm1() != null)
-            alarmTime1 = context.getAlarm1();
+        if (context.getAMRadio() != 0){
+            AMRadio = context.getAMRadio();
+        }
+        if (context.getFMRadio() != 0){
+            FMRadio = context.getFMRadio();
+        } else FMRadio = mfrequency;
 
-        if (context.getAlarm2() != null)
-            alarmTime2 = context.getAlarm2();
-
-        if (context.getSnoozeTime1() != null)
-            snoozeTime1 = context.getSnoozeTime1();
-
-        if (context.getSnoozeTime2() != null)
-            snoozeTime2 = context.getSnoozeTime2();
-
+        if (context.getMode() == 0){
+            mode = 1;
+        }else mode = context.getMode();
 
     }
 
 
     @Override
     public void onExitState(ContextClockradio context){
-        //Der er en fejl med LED'en eneste måde at kontrollere nr 1 på.
+
         context.ui.turnOffLED(1);
         context.ui.toggleRadioPlaying();
+        context.setAMRadio(AMRadio);
+        context.setFMRadio(FMRadio);
 
     }
 
@@ -79,7 +74,6 @@ public class StateSetfrequency extends StateAdapter {
                 FMRadio = mfrequency;
                 context.setFrequency(mfrequency);
             }
-
         }
 
         context.updateDisplayFrequency();
@@ -99,7 +93,6 @@ public class StateSetfrequency extends StateAdapter {
                 AMRadio = mfrequency;
                 context.setFrequency(mfrequency);
             }
-
         }
 
         if (mode == 1){
@@ -112,7 +105,6 @@ public class StateSetfrequency extends StateAdapter {
                 FMRadio = mfrequency;
                 context.setFrequency(mfrequency);
         }
-
     }
 
         context.updateDisplayFrequency();
@@ -132,9 +124,7 @@ public class StateSetfrequency extends StateAdapter {
         } else{
             mfrequency = 95.3;
             context.setFrequency(mfrequency);
-
         }
-
     } else if(mode == 2){
         if (AMRadio != 0){
             mfrequency = AMRadio;
@@ -143,7 +133,6 @@ public class StateSetfrequency extends StateAdapter {
             mfrequency = 15.5;
             context.setFrequency(mfrequency);
         }
-
     }
         context.updateDisplayFrequency();
     }
@@ -153,26 +142,12 @@ public class StateSetfrequency extends StateAdapter {
         context.stateRadio = false;
         context.setMode(mode);
         context.setState(new StateStandby(context.getTime()));
-
     }
 
     @Override
     public void onLongClick_Preset(ContextClockradio context) {
         context.ui.turnOnTextBlink();
-
         context.setFrequency(mfrequency);
         context.setState(new StateFrequencySaving());
-    }
-
-    @Override
-    public void onClick_AL1(ContextClockradio context) {
-        if (context.alarmPlaying)
-            context.setState(new StateAlarmPlaying());
-    }
-
-    @Override
-    public void onClick_AL2(ContextClockradio context) {
-        if (context.alarmPlaying)
-            context.setState(new StateAlarmPlaying());
     }
 }
